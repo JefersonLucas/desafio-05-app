@@ -41,5 +41,23 @@ transactionRouter.get("/period/:yearMonth", controller.findPeriod);
  */
 transactionRouter.post("/", controller.create);
 
+/** Rota update:
+ * Essa rota faz a atualização de documentos.
+ * Ex.: 
+ * http://localhost:3001/api/transaction/6091a6c9cd937d185461f035
+ * {
+    "description": "Compras em hortifruti",
+    "value": 30,
+    "category": "Mercado",
+    "year": 2019,
+    "month": 1,
+    "day": 4,
+    "yearMonth": "2019-01",
+    "yearMonthDay": "2019-01-05",
+    "type": "-"
+  }
+ */
+transactionRouter.put("/:id", controller.update);
+
 // Exportando as rotas
 module.exports = transactionRouter;

@@ -1,3 +1,4 @@
+const { response } = require("express");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -51,9 +52,9 @@ const findOne = async (require, response) => {
   } catch (error) {
     // Log de erro
     console.log(`GET /transaction/ - ${JSON.stringify(error.message)}`);
-    response.status(500).send({
-      message: error.message || "Erro ao buscar o transaction id" + id,
-    });
+    response
+      .status(500)
+      .send({ message: error.message || `Erro ao buscar o documento: ${id}` });
   }
 };
 
@@ -86,6 +87,7 @@ const findPeriod = async (require, response) => {
  * Essa função faz a criação de novos documentos.
  */
 const create = async (require, response) => {
+  // `transaction` buscado por parâmetro na rota
   const transaction = require.body;
   try {
     // Criando uma nova transaction a partir do modelo
@@ -93,15 +95,48 @@ const create = async (require, response) => {
     // Enviando o resultado da busca
     response.send({ message: "Documento criado com sucesso" });
     // Log de sucesso
-    console.log(`GET /transaction/${JSON.stringify(transaction)}`);
+    console.log(`POST /transaction/${JSON.stringify(transaction)}`);
   } catch (error) {
     // Log de erro
-    console.log(`GET /transaction/ - ${JSON.stringify(error.message)}`);
+    console.log(`POST /transaction/ - ${JSON.stringify(error.message)}`);
     response
       .status(500)
       .send({ message: error.message || "Erro ao criar um novo documento" });
   }
 };
 
+const update = async (require, response) => {
+  // `transaction` buscado por requisição na rota
+  const transaction = require.body;
+  // `id` buscado por parâmetro na rota
+  const id = require.params.id;
+  try {
+    // Verificação
+    if (!transaction) {
+      return response
+        .status(400)
+        .send({ message: "Dados para atualização vazio" });
+    }
+    await TransactionModel.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      { $set: transaction },
+      { new: true },
+    );
+    // Enviando o resultado da atualizaçõ
+    response.send(transaction);
+    response.end();
+    // Log de sucesso
+    console.log(`PUT /transaction/${id}`);
+  } catch (error) {
+    // Log de erro
+    console.log(`PUT /transaction/ - ${JSON.stringify(error.message)}`);
+    response
+      .status(500)
+      .send({ message: error.message || `Erro ao atualizar documento: ${id}` });
+  }
+};
+
 // Exportando as funções services
-module.exports = { findAll, findOne, findPeriod, create };
+module.exports = { findAll, findOne, findPeriod, create, update };
