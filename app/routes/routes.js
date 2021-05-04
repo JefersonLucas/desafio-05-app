@@ -23,5 +23,23 @@ transactionRouter.get("/:id", controller.findOne);
  */
 transactionRouter.get("/period/:yearMonth", controller.findPeriod);
 
+/** Rota create:
+ * Essa rota faz a criação de documentos.
+ * Ex.: 
+ * http://localhost:3001/api/transaction/
+ * {
+    "description": "Compras em hortifruti",
+    "value": 30,
+    "category": "Mercado",
+    "year": 2019,
+    "month": 1,
+    "day": 4,
+    "yearMonth": "2019-01",
+    "yearMonthDay": "2019-01-05",
+    "type": "-"
+  }
+ */
+transactionRouter.post("/", controller.create);
+
 // Exportando as rotas
 module.exports = transactionRouter;

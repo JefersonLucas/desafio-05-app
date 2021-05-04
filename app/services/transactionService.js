@@ -1,4 +1,3 @@
-const { response } = require("express");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -59,7 +58,7 @@ const findOne = async (require, response) => {
 };
 
 /** findPeriod:
- * Essa função faz a busca de um único documento pelo o seu `id`.
+ * Essa função faz a busca um documento pelo o seu período.
  */
 const findPeriod = async (require, response) => {
   // `yearMonth` buscado por parâmetro na rota
@@ -83,5 +82,26 @@ const findPeriod = async (require, response) => {
   }
 };
 
+/** create:
+ * Essa função faz a criação de novos documentos.
+ */
+const create = async (require, response) => {
+  const transaction = require.body;
+  try {
+    // Criando uma nova transaction a partir do modelo
+    await TransactionModel.create(transaction);
+    // Enviando o resultado da busca
+    response.send({ message: "Documento criado com sucesso" });
+    // Log de sucesso
+    console.log(`GET /transaction/${JSON.stringify(transaction)}`);
+  } catch (error) {
+    // Log de erro
+    console.log(`GET /transaction/ - ${JSON.stringify(error.message)}`);
+    response
+      .status(500)
+      .send({ message: error.message || "Erro ao criar um novo documento" });
+  }
+};
+
 // Exportando as funções services
-module.exports = { findAll, findOne, findPeriod };
+module.exports = { findAll, findOne, findPeriod, create };
