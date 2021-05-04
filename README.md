@@ -452,7 +452,7 @@ A API pode ser acesada em: [http://nome-do-projeto.herokuapp.com/api/](http://no
 Por conta dos repositórios ter que serem separados, os repositórios e deploys estão separados da seguinte forma:
 
 - **Backend**
-  - Repositório remoto: [GitHub]();
+  - Repositório remoto: [GitHub](https://github.com/JefersonLucas/desafio-05-app);
   - Deploy: [Heroku]().
 - **Frontend**
   - Repositório remoto: [GitHub]();
