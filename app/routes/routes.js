@@ -47,7 +47,7 @@ transactionRouter.post("/", controller.create);
  * http://localhost:3001/api/transaction/6091a6c9cd937d185461f035
  * {
     "description": "Compras em hortifruti",
-    "value": 30,
+    "value": 10,
     "category": "Mercado",
     "year": 2019,
     "month": 1,
@@ -58,6 +58,12 @@ transactionRouter.post("/", controller.create);
   }
  */
 transactionRouter.put("/:id", controller.update);
+
+/** Rota remove:
+ * Essa rota faz a remoção de documentos.
+ * Ex.: http://localhost:3001/api/transaction/6091a6c9cd937d185461f035
+ */
+transactionRouter.delete("/:id", controller.remove);
 
 // Exportando as rotas
 module.exports = transactionRouter;

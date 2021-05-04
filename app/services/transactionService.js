@@ -105,6 +105,9 @@ const create = async (require, response) => {
   }
 };
 
+/** update:
+ * Essa função faz a atualização de novos documentos.
+ */
 const update = async (require, response) => {
   // `transaction` buscado por requisição na rota
   const transaction = require.body;
@@ -137,6 +140,26 @@ const update = async (require, response) => {
       .send({ message: error.message || `Erro ao atualizar documento: ${id}` });
   }
 };
+/** remove:
+ * Essa função faz a remoção de documentos.
+ */
+const remove = async (require, response) => {
+  // `id` buscado por parâmetro na rota
+  const id = require.params.id;
+  try {
+    await TransactionModel.findOneAndDelete({ _id: id });
+    // Enviando o id da remoção
+    response.send({ message: "Documento removido com successo" });
+    response.end();
+    // Log de sucesso
+    console.log(`DELETE /transaction/${id}`);
+  } catch (error) {
+    console.log(`DELETE /transaction - ${JSON.stringify(error.message)}`);
+    response.status(500).send({
+      message: error.message || `Não foi possivel remover documento: ${id}`,
+    });
+  }
+};
 
 // Exportando as funções services
-module.exports = { findAll, findOne, findPeriod, create, update };
+module.exports = { findAll, findOne, findPeriod, create, update, remove };
