@@ -17,5 +17,11 @@ transactionRouter.get("/", controller.findAll);
  */
 transactionRouter.get("/:id", controller.findOne);
 
+/** Rota findPeriod:
+ * Essa rota faz a busca um documento pelo o seu período.
+ * Ex.: http://localhost:3001/api/transaction/period/2019-01
+ */
+transactionRouter.get("/period/:yearMonth", controller.findPeriod);
+
 // Exportando as rotas
 module.exports = transactionRouter;

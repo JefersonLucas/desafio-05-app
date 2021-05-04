@@ -1,3 +1,4 @@
+const { response } = require("express");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -57,5 +58,30 @@ const findOne = async (require, response) => {
   }
 };
 
+/** findPeriod:
+ * Essa função faz a busca de um único documento pelo o seu `id`.
+ */
+const findPeriod = async (require, response) => {
+  // `yearMonth` buscado por parâmetro na rota
+  const yearMonth = require.params.yearMonth.split("-");
+  try {
+    const transaction = await TransactionModel.find({
+      year: yearMonth[0],
+      month: yearMonth[1],
+    });
+    // Enviando o resultado da busca
+    response.send(transaction);
+    response.end();
+    // Log de sucesso
+    console.log(`GET /transaction/period/${require.params.yearMonth}`);
+  } catch (error) {
+    // Log de erro
+    console.log(`GET /transaction/period/ - ${JSON.stringify(error.message)}`);
+    response
+      .status(500)
+      .send({ message: error.message || "Erro ao listar todos os documentos" });
+  }
+};
+
 // Exportando as funções services
-module.exports = { findAll, findOne };
+module.exports = { findAll, findOne, findPeriod };
